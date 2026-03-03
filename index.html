@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Role Message Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <section id="role-page" class="card active" aria-label="Select role page">
+      <h1>Choose Your Role</h1>
+      <p>Select whether you are a receiver or sender.</p>
+      <div class="button-row">
+        <button id="receiver-btn" type="button">Receiver</button>
+        <button id="sender-btn" type="button">Sender</button>
+      </div>
+    </section>
+
+    <section id="receiver-page" class="card" aria-label="Receiver page">
+      <h2>Receiver</h2>
+      <p>Type a message and click send.</p>
+      <label for="message-input" class="sr-only">Message</label>
+      <textarea id="message-input" placeholder="Enter your message..."></textarea>
+      <div class="button-row">
+        <button id="send-btn" type="button">Send</button>
+        <button id="back-from-receiver" type="button" class="secondary">Back</button>
+      </div>
+      <p id="receiver-status" class="status" aria-live="polite"></p>
+    </section>
+
+    <section id="sender-page" class="card" aria-label="Sender page">
+      <h2>Sender</h2>
+      <p>Waiting for message from receiver...</p>
+      <p id="sender-status" class="status" aria-live="polite"></p>
+      <div id="beaming" class="beaming" aria-hidden="true">
+        <div class="dot center"></div>
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <div id="message-box" class="message-box hidden" aria-live="polite">
+        <h3>Message Received</h3>
+        <p id="received-message"></p>
+      </div>
+      <div class="button-row">
+        <button id="clear-btn" type="button" class="secondary">Clear Display</button>
+        <button id="back-from-sender" type="button" class="secondary">Back</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
