@@ -33,6 +33,13 @@ if ("NDEFReader" in window) {
       return;
     }
 
+    // Show connection indicator for both roles
+    if (activeRole === "receiver") {
+      receiverStatus.textContent = "✓ Device connected! Writing message...";
+    } else if (activeRole === "sender") {
+      senderStatus.textContent = "✓ Device connected! Reading message...";
+    }
+
     if (activeRole !== "sender") {
       return;
     }
@@ -41,9 +48,9 @@ if ("NDEFReader" in window) {
 
     if (message) {
       showMessageState(message);
-      senderStatus.textContent = "Message received from NFC tag.";
+      senderStatus.textContent = "✓ Message received from device!";
     } else {
-      senderStatus.textContent = "Tag read, but no valid text message was found.";
+      senderStatus.textContent = "✓ Device detected, but no message found.";
       showWaitingState();
     }
   };
@@ -131,14 +138,16 @@ function extractMessageFromTag(event) {
   return "";
 }
 
-function write(data) {
+function write(message) {
   ignoreRead = true;
   return new Promise((resolve, reject) => {
     ndef.addEventListener(
       "reading",
       () => {
         ndef
-          .write(data)
+          .write({
+            records: [{ recordType: "text", data: message }],
+          })
           .then(resolve)
           .catch(reject)
           .finally(() => {
@@ -159,7 +168,7 @@ async function startSenderMode() {
     return;
   }
 
-  senderStatus.textContent = "Bring an NFC tag close to receive a message.";
+  senderStatus.textContent = "📡 Scanning... Bring the other device close.";
 
   try {
     await ensureScanStarted();
@@ -181,12 +190,12 @@ async function sendViaNfc() {
     return;
   }
 
-  receiverStatus.textContent = "Bring an NFC tag close to write your message.";
+  receiverStatus.textContent = "📡 Scanning... Bring the other device close.";
 
   try {
     await ensureScanStarted();
     await write(message);
-    receiverStatus.textContent = "Message written to NFC tag successfully.";
+    receiverStatus.textContent = "✓ Message written successfully!";
     messageInput.value = "";
   } catch (error) {
     ignoreRead = false;
